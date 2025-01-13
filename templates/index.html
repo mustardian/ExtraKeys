@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keypad</title>
+    <link rel="icon" href="{{ url_for('static', filename='ame-jpeg.jpg') }}" type="image/x-icon">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f4f8; /* Light background */
+            color: #333; /* Dark text */
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .keypad-container {
+            text-align: center;
+            background: #ffffff; /* Card-like background */
+            padding: 30px;
+            border-radius: 20px; /* Rounded container */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px; /* Slightly larger gaps */
+            margin-top: 20px;
+        }
+
+        .key {
+            font-size: 18px;
+            padding: 20px;
+            border: none;
+            border-radius: 10px; /* Rounded buttons */
+            cursor: pointer;
+            background-color: #007bff; /* Primary blue */
+            color: #fff; /* White text */
+            transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+        }
+
+        .key:hover {
+            transform: scale(1.1);
+            background-color: #0056b3; /* Darker blue on hover */
+            box-shadow: 0 4px 10px rgba(0, 91, 187, 0.2); /* Hover shadow */
+        }
+
+        .key:active {
+            transform: scale(1); /* Reset scale on active */
+            background-color: #003f7f; /* Even darker blue on click */
+        }
+
+        .fullscreen-toggle {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px; /* Rounded button */
+            cursor: pointer;
+            background-color: #28a745; /* Success green */
+            color: #fff; /* White text */
+            transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+        }
+
+        .fullscreen-toggle:hover {
+            transform: scale(1.1);
+            background-color: #218838; /* Darker green on hover */
+            box-shadow: 0 4px 10px rgba(33, 136, 56, 0.2); /* Hover shadow */
+        }
+
+        .fullscreen-toggle:active {
+            transform: scale(1);
+            background-color: #1c7430; /* Even darker green on click */
+        }
+
+    </style>
+
+    <script>
+        // Send key press without refreshing
+        function pressKey(key) {
+            fetch(`/press_key/${key}`)
+                .then(response => {
+                    if (!response.ok) {
+                        console.error('Error pressing key:', response.statusText);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Toggle fullscreen
+        function toggleFullscreen() {
+            const elem = document.documentElement;
+            if (!document.fullscreenElement) {
+                elem.requestFullscreen().catch(err => {
+                    console.error(`Error attempting to enable fullscreen mode: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="keypad-container">
+        <h1>Macro Keypad</h1>
+        <div class="keypad">
+            <button class="key" onclick="pressKey('F13')">F13</button>
+            <button class="key" onclick="pressKey('F14')">F14</button>
+            <button class="key" onclick="pressKey('F15')">F15</button>
+            <button class="key" onclick="pressKey('F16')">F16</button>
+            <button class="key" onclick="pressKey('F17')">F17</button>
+            <button class="key" onclick="pressKey('F18')">F18</button>
+            <button class="key" onclick="pressKey('F19')">F19</button>
+            <button class="key" onclick="pressKey('F20')">F20</button>
+            <button class="key" onclick="pressKey('F21')">F21</button>
+        </div>
+        <button class="fullscreen-toggle" onclick="toggleFullscreen()">Toggle Fullscreen</button>
+    </div>
+</body>
+</html>
